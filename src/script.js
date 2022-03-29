@@ -13,6 +13,9 @@ const material = new THREE.MeshBasicMaterial({ color: 'gold', wireframe: true })
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
+mesh.rotation.x = Math.PI * 0.25;
+mesh.rotation.y = Math.PI * 0.25;
+
 // Объект с размерами
 const sizes = {
     width: 600,
@@ -20,10 +23,11 @@ const sizes = {
 };
 
 // Камера
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-camera.position.z = 3;
+//const perspectiveCamera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 100);
+const orthographicCamera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0.1, 100);
+orthographicCamera.position.z = 3;
 
-scene.add(camera);
+scene.add(orthographicCamera);
 
 // Отрисовщик
 const renderer = new THREE.WebGLRenderer({
@@ -31,38 +35,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 
 
-// Отрисовка осей координат
-const axesHelper = new THREE.AxesHelper(3);
-scene.add(axesHelper);
-
 renderer.setSize(sizes.width, sizes.height);
-
-const clock = new THREE.Clock();
-
-/**
- * Анимация
- */
-const animateLoop = () =>
-{
-    const elapsedTime = clock.getElapsedTime();
-    
-    // Вращение объекта
-    // mesh.rotation.y = elapsedTime;
-
-    // Передвижение объекта
-    // mesh.position.x = Math.cos(elapsedTime);
-    // mesh.position.y = Math.sin(elapsedTime);
-
-    // Трансформация камеры
-    camera.position.x = Math.cos(elapsedTime);
-    camera.position.y = Math.sin(elapsedTime);
-    camera.lookAt(mesh.position);
-
-    // Отрисовываем
-    renderer.render(scene, camera);
-
-    // Вызываем функцию анимации в следующем фрейме
-    window.requestAnimationFrame(animateLoop);
-};
-
-animateLoop();
+// Отрисовываем
+renderer.render(scene, orthographicCamera);
