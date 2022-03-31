@@ -23,11 +23,10 @@ const sizes = {
 };
 
 // Камера
-//const perspectiveCamera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 100);
-const orthographicCamera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0.1, 100);
-orthographicCamera.position.z = 3;
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 100);
+camera.position.z = 3;
 
-scene.add(orthographicCamera);
+scene.add(camera);
 
 // Отрисовщик
 const renderer = new THREE.WebGLRenderer({
@@ -37,4 +36,4 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize(sizes.width, sizes.height);
 // Отрисовываем
-renderer.render(scene, orthographicCamera);
+renderer.render(scene, camera);
