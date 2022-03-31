@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 // Подключим файл со стилями
 import './style.css';
@@ -28,12 +29,28 @@ camera.position.z = 3;
 
 scene.add(camera);
 
+const canvas = document.querySelector('canvas.canvas-js');
+
 // Отрисовщик
 const renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector('canvas.canvas-js')
+    canvas: canvas,
 });
 
 
 renderer.setSize(sizes.width, sizes.height);
-// Отрисовываем
-renderer.render(scene, camera);
+
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+const tick = () => {
+    controls.update();
+
+    // Отрисовываем
+    renderer.render(scene, camera);
+
+    // Вызываем функцию анимации в следующем фрейме
+    window.requestAnimationFrame(tick);
+};
+
+tick();
