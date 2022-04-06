@@ -14,8 +14,6 @@ const material = new THREE.MeshBasicMaterial({ color: 'gold', wireframe: true })
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
-mesh.rotation.x = Math.PI * 0.25;
-mesh.rotation.y = Math.PI * 0.25;
 
 // Объект с размерами
 const sizes = {
