@@ -17,9 +17,42 @@ scene.add(mesh);
 
 // Объект с размерами
 const sizes = {
-    width: 600,
-    height: 600
+    width: window.innerWidth,
+    height: window.innerHeight,
 };
+
+window.addEventListener('resize', () => {
+    // Обновляем размеры
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+
+    // Обновляем соотношение сторон камеры
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
+
+    // Обновляем renderer
+    renderer.setSize(sizes.width, sizes.height);
+});
+
+window.addEventListener('dblclick', () => {
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+
+    if(!fullscreenElement) {
+        if(canvas.requestFullscreen) {
+            canvas.requestFullscreen();
+        }
+        else if(canvas.webkitRequestFullscreen) {
+            canvas.webkitRequestFullscreen();
+        }
+    } else {
+        if(document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+        else if(document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    }
+});
 
 // Камера
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 100);
