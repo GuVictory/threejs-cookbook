@@ -9,18 +9,7 @@ const scene = new THREE.Scene();
 
 
 // Создаем пустой BufferGeometry
-const geometry = new THREE.BufferGeometry();
-
-// Создаем Float32Array, который содержит координаты вершин
-const positionsArray = new Float32Array([
-    0, 0, 0, // Первая вершина
-    0, 1, 0, // Вторая вершина
-    1, 0, 0  // Третья вершина
-]);
-
-//Создаем атрибут и называем его 'position'
-const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3);
-geometry.setAttribute('position', positionsAttribute);
+const geometry = new THREE.BoxGeometry();
 
 const material = new THREE.MeshBasicMaterial({ color: 'gold', wireframe: true });
 
