@@ -1,8 +1,16 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import * as dat from 'lil-gui'
 
 // Подключим файл со стилями
 import './style.css';
+
+const parameters = {
+    color: 0xff0000,
+};
+
+// Отладка
+const gui = new dat.GUI();
 
 // Сцена
 const scene = new THREE.Scene();
@@ -11,7 +19,7 @@ const scene = new THREE.Scene();
 // Создаем пустой BufferGeometry
 const geometry = new THREE.BoxGeometry();
 
-const material = new THREE.MeshBasicMaterial({ color: 'gold', wireframe: true });
+const material = new THREE.MeshBasicMaterial({ color: parameters.color, wireframe: true });
 
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
@@ -75,6 +83,25 @@ renderer.setSize(sizes.width, sizes.height);
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+
+gui
+    .add(mesh.position, 'y')
+    .min(- 3)
+    .max(3)
+    .step(0.01)
+    .name('Box x');
+    
+gui.add(mesh, 'visible');
+
+gui.add(material, 'wireframe');
+
+gui
+    .addColor(parameters, 'color')
+    .onChange(() =>
+    {
+        material.color.set(parameters.color)
+    });
+
 
 const tick = () => {
     controls.update();
