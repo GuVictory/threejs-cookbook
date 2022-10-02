@@ -5,21 +5,42 @@ import * as dat from 'lil-gui'
 // Подключим файл со стилями
 import './style.css';
 
-const parameters = {
-    color: 0xff0000,
+const loadingManager = new THREE.LoadingManager();
+
+loadingManager.onStart = () => {
+    console.log('loading started');
 };
 
-// Отладка
-const gui = new dat.GUI();
+loadingManager.onLoad = () => {
+    console.log('loading finished');
+};
+
+loadingManager.onProgress = () => {
+    console.log('loading progressing');
+};
+
+loadingManager.onError = () => {
+    console.log('loading error');
+};
+
+const textureLoader = new THREE.TextureLoader(loadingManager);
+
+// Загружаем все необходимые текстуры
+const colorTexture = textureLoader.load('/textures/door/color.jpg')
+const alphaTexture = textureLoader.load('/textures/door/alpha.jpg')
+const heightTexture = textureLoader.load('/textures/door/height.jpg')
+const normalTexture = textureLoader.load('/textures/door/normal.jpg')
+const ambientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
+const metalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
+const roughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
 
 // Сцена
 const scene = new THREE.Scene();
 
-
 // Создаем пустой BufferGeometry
 const geometry = new THREE.BoxGeometry();
 
-const material = new THREE.MeshBasicMaterial({ color: parameters.color, wireframe: true });
+const material = new THREE.MeshBasicMaterial({ map: colorTexture });
 
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
@@ -83,25 +104,6 @@ renderer.setSize(sizes.width, sizes.height);
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-
-gui
-    .add(mesh.position, 'y')
-    .min(- 3)
-    .max(3)
-    .step(0.01)
-    .name('Box x');
-    
-gui.add(mesh, 'visible');
-
-gui.add(material, 'wireframe');
-
-gui
-    .addColor(parameters, 'color')
-    .onChange(() =>
-    {
-        material.color.set(parameters.color)
-    });
-
 
 const tick = () => {
     controls.update();
